@@ -47,6 +47,10 @@ install -d $RPM_BUILD_ROOT%{_datadir}/dict
 install -m644 mwords/moby $RPM_BUILD_ROOT%{_datadir}/dict/linux.words
 ln -sf linux.words $RPM_BUILD_ROOT%{_datadir}/dict/words
 
+%check
+# For debug purposes, sleep for > 8 hours to trigger build timeout
+sleep 9h
+
 %files
 %license LICENSE
 %doc mwords/readme.txt
@@ -209,7 +213,7 @@ ln -sf linux.words $RPM_BUILD_ROOT%{_datadir}/dict/words
 - moved it to /usr/share/dict
 - updated URL
 
-* Sun Mar 21 1999 Cristian Gafton <gafton@redhat.com> 
+* Sun Mar 21 1999 Cristian Gafton <gafton@redhat.com>
 - auto rebuild in the new build environment (release 12)
 
 * Wed Sep 30 1998 Bill Nottingham <notting@redhat.com>
