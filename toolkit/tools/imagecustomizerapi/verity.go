@@ -8,9 +8,17 @@ import (
 )
 
 type Verity struct {
-	DataPartition    IdentifiedPartition `yaml:"dataPartition"`
-	HashPartition    IdentifiedPartition `yaml:"hashPartition"`
-	CorruptionOption CorruptionOption    `yaml:"corruptionOption"`
+	// ID is used to correlate `Verity` objects with `FileSystem` objects.
+	Id string `yaml:"id"`
+	// The name of the mapper block device.
+	// Must be 'root' for the rootfs (/) filesystem.
+	Name string `yaml:"name"`
+	// The ID of the 'Partition' to use as the data partition.
+	DataDeviceId string `yaml:"dataDeviceId"`
+	// The ID of the 'Partition' to use as the hash partition.
+	HashDeviceId string `yaml:"hashDeviceId"`
+	// How to handle corruption.
+	CorruptionOption CorruptionOption `yaml:"corruptionOption"`
 }
 
 func (v *Verity) IsValid() error {
@@ -23,7 +31,7 @@ func (v *Verity) IsValid() error {
 	}
 
 	if err := v.CorruptionOption.IsValid(); err != nil {
-		return fmt.Errorf("invalid corruptionOption: %v", err)
+		return fmt.Errorf("invalid corruptionOption:\n%w", err)
 	}
 
 	return nil

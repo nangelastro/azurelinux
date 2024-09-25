@@ -8,22 +8,26 @@ import (
 )
 
 type Storage struct {
-	BootType    BootType     `yaml:"bootType"`
-	Disks       []Disk       `yaml:"disks"`
-	FileSystems []FileSystem `yaml:"filesystems"`
+	ResetPartitionsUuidsType ResetPartitionsUuidsType `yaml:"resetPartitionsUuidsType"`
+	BootType                 BootType                 `yaml:"bootType"`
+	Disks                    []Disk                   `yaml:"disks"`
+	Verity                   []Verity                 `yaml:"verity"`
+	FileSystems              []FileSystem             `yaml:"filesystems"`
 }
 
 func (s *Storage) IsValid() error {
 	var err error
+
+	err = s.ResetPartitionsUuidsType.IsValid()
+	if err != nil {
+		return err
+	}
 
 	err = s.BootType.IsValid()
 	if err != nil {
 		return err
 	}
 
-	if len(s.Disks) < 1 {
-		return fmt.Errorf("at least 1 disk must be specified")
-	}
 	if len(s.Disks) > 1 {
 		return fmt.Errorf("defining multiple disks is not currently supported")
 	}
@@ -49,6 +53,39 @@ func (s *Storage) IsValid() error {
 		}
 
 		fileSystemSet[fileSystem.DeviceId] = fileSystem
+	}
+
+	for i, verity := range s.Verity {
+		err = verity.IsValid()
+		if err != nil {
+			return fmt.Errorf("invalid verity item at index %d:\n%w", i, err)
+		}
+	}
+
+	hasResetUuids := s.ResetPartitionsUuidsType != ResetPartitionsUuidsTypeDefault
+	hasBootType := s.BootType != BootTypeNone
+	hasDisks := len(s.Disks) > 0
+	hasVerity := len(s.Verity) > 0
+	hasFileSystems := len(s.FileSystems) > 0
+
+	if hasResetUuids && hasDisks {
+		return fmt.Errorf("cannot specify both 'resetPartitionsUuidsType' and 'disks'")
+	}
+
+	if !hasBootType && hasDisks {
+		return fmt.Errorf("must specify 'bootType' if 'disks' are specified")
+	}
+
+	if hasBootType && !hasDisks {
+		return fmt.Errorf("cannot specify 'bootType' without specifying 'disks'")
+	}
+
+	if hasVerity && !hasDisks {
+		return fmt.Errorf("cannot specify 'verity' without specifying 'disks'")
+	}
+
+	if hasFileSystems && !hasDisks {
+		return fmt.Errorf("cannot specify 'filesystems' without specifying 'disks'")
 	}
 
 	partitionSet := make(map[string]Partition)

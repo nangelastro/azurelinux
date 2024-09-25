@@ -13,7 +13,7 @@ import (
 
 func TestConfigIsValid(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{{
 				PartitionTableType: "gpt",
 				MaxSize:            ptrutils.PtrTo(DiskSize(3 * diskutils.MiB)),
@@ -40,7 +40,7 @@ func TestConfigIsValid(t *testing.T) {
 			ResetBootLoaderType: "hard-reset",
 			Hostname:            "test",
 		},
-		Scripts: &Scripts{},
+		Scripts: Scripts{},
 		Iso:     &Iso{},
 	}
 
@@ -50,7 +50,7 @@ func TestConfigIsValid(t *testing.T) {
 
 func TestConfigIsValidLegacy(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{{
 				PartitionTableType: "gpt",
 				MaxSize:            ptrutils.PtrTo(DiskSize(3 * diskutils.MiB)),
@@ -81,7 +81,7 @@ func TestConfigIsValidLegacy(t *testing.T) {
 
 func TestConfigIsValidNoBootType(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{{
 				PartitionTableType: "gpt",
 				MaxSize:            ptrutils.PtrTo(DiskSize(2 * diskutils.MiB)),
@@ -106,7 +106,7 @@ func TestConfigIsValidNoBootType(t *testing.T) {
 
 func TestConfigIsValidMissingBootLoaderReset(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{{
 				PartitionTableType: "gpt",
 				MaxSize:            ptrutils.PtrTo(DiskSize(3 * diskutils.MiB)),
@@ -141,7 +141,7 @@ func TestConfigIsValidMissingBootLoaderReset(t *testing.T) {
 
 func TestConfigIsValidMultipleDisks(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{
 				{
 					PartitionTableType: "gpt",
@@ -167,7 +167,7 @@ func TestConfigIsValidMultipleDisks(t *testing.T) {
 
 func TestConfigIsValidZeroDisks(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			BootType: BootTypeEfi,
 			Disks:    []Disk{},
 		},
@@ -195,7 +195,7 @@ func TestConfigIsValidBadHostname(t *testing.T) {
 
 func TestConfigIsValidBadDisk(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			BootType: BootTypeEfi,
 			Disks: []Disk{{
 				PartitionTableType: PartitionTableTypeGpt,
@@ -215,7 +215,7 @@ func TestConfigIsValidBadDisk(t *testing.T) {
 
 func TestConfigIsValidMissingEsp(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{{
 				PartitionTableType: "gpt",
 				MaxSize:            ptrutils.PtrTo(DiskSize(2 * diskutils.MiB)),
@@ -236,7 +236,7 @@ func TestConfigIsValidMissingEsp(t *testing.T) {
 
 func TestConfigIsValidMissingBiosBoot(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{{
 				PartitionTableType: "gpt",
 				MaxSize:            ptrutils.PtrTo(DiskSize(2 * diskutils.MiB)),
@@ -257,7 +257,7 @@ func TestConfigIsValidMissingBiosBoot(t *testing.T) {
 
 func TestConfigIsValidInvalidMountPoint(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{{
 				PartitionTableType: "gpt",
 				MaxSize:            ptrutils.PtrTo(DiskSize(3 * diskutils.MiB)),
@@ -295,7 +295,7 @@ func TestConfigIsValidInvalidMountPoint(t *testing.T) {
 
 func TestConfigIsValidKernelCLI(t *testing.T) {
 	config := &Config{
-		Storage: &Storage{
+		Storage: Storage{
 			Disks: []Disk{{
 				PartitionTableType: "gpt",
 				MaxSize:            ptrutils.PtrTo(DiskSize(3 * diskutils.MiB)),
@@ -345,7 +345,7 @@ func TestConfigIsValidInvalidIso(t *testing.T) {
 
 func TestConfigIsValidInvalidScripts(t *testing.T) {
 	config := &Config{
-		Scripts: &Scripts{
+		Scripts: Scripts{
 			PostCustomization: []Script{
 				{
 					Path: "",

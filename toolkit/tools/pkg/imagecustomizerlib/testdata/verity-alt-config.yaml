@@ -45,7 +45,7 @@ storage:
     mountPoint:
       path: /boot
 
-  - deviceId: root
+  - deviceId: verityroot
     type: ext4
     mountPoint:
       path: /
