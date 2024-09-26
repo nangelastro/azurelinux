@@ -30,7 +30,7 @@
 Summary:        Linux Kernel
 Name:           kernel
 Version:        6.6.51.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        GPLv2
 Vendor:         Microsoft Corporation
 Distribution:   Azure Linux
@@ -407,6 +407,9 @@ echo "initrd of kernel %{uname_r} removed" >&2
 %{_sysconfdir}/bash_completion.d/bpftool
 
 %changelog
+* Thu Sep 26 2024 Rachel Menge <rachelmenge@microsoft.com> - 6.6.51.1-3
+- Make e1000 drivers modules instead of built-in
+
 * Fri Sep 20 2024 Chris Co <chrco@microsoft.com> - 6.6.51.1-2
 - Enable MLX5 TC offload
 
