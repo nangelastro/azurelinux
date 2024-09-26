@@ -14,7 +14,7 @@ func customizePartitions(buildDir string, baseConfigPath string, config *imagecu
 	buildImageFile string,
 ) (bool, string, error) {
 	switch {
-	case config.Storage != nil:
+	case config.CustomizePartitions():
 		logger.Log.Infof("Customizing partitions")
 
 		newBuildImageFile := filepath.Join(buildDir, PartitionCustomizedImageName)
@@ -28,7 +28,7 @@ func customizePartitions(buildDir string, baseConfigPath string, config *imagecu
 
 		return true, newBuildImageFile, nil
 
-	case config.ResetPartitionsUuidsType != imagecustomizerapi.ResetPartitionsUuidsTypeDefault:
+	case config.Storage.ResetPartitionsUuidsType != imagecustomizerapi.ResetPartitionsUuidsTypeDefault:
 		err := resetPartitionsUuids(buildImageFile, buildDir)
 		if err != nil {
 			return false, "", err
